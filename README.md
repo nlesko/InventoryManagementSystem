@@ -1,3 +1,3 @@
 ```
- dotnet ef migrations add RemoveAddressForeignKeyFromAddressTypeT -p ./Eqi.API.csproj -s ./Eqi.API.csproj --output-dir ./Data/Migrations 
+ dotnet ef migrations add InitialMigration -p ./InventoryManagementSystemApi.API.csproj -s ./InventoryManagementSystemApi.API.csproj --output-dir ./Infrastructure/Persistence/Migrations 
 ```

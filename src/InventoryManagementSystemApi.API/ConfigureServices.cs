@@ -72,6 +72,8 @@ public static class ConfigureServices
 
                          connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; SSL Mode=Require; Trust Server Certificate=true";
                      }
+
+                    options.UseNpgsql(connStr);
                  });
                  
         services.AddIdentityCore<ApplicationUser>(opt =>
@@ -83,7 +85,9 @@ public static class ConfigureServices
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddSignInManager<SignInManager<ApplicationUser>>()
         .AddDefaultTokenProviders();;
-        var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
+        
+        var jwtSettings = configuration.GetSection("JWTSettings"); 
+        var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["securityKey"]));
 
         services.AddAuthentication(options =>
             {
@@ -97,29 +101,18 @@ public static class ConfigureServices
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
+                    ValidIssuer = jwtSettings["validIssuer"],
+                    ValidAudience = jwtSettings["validAudience"],
                     ClockSkew = TimeSpan.Zero
-                };
-                opt.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access_token"];
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
-                        {
-                            context.Token = accessToken;
-                        }
-                        return Task.CompletedTask;
-                    }
                 };
             });
         // services.AddScoped<IDomainEventService, DomainEventService>();
 
         services.AddTransient<IDateTimeService, DateTimeService>();
-
+        services.AddScoped<TokenService>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddTransient<IIdentityService, IdentityService>();
 
