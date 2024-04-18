@@ -60,7 +60,7 @@ public class LoginUserEndpoint : BaseEndpointModule
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/login", async (ISender sender, LoginRequest data, CancellationToken cancellationToken) =>
+        app.MapPost("/accounts/login", async (ISender sender, LoginRequest data, CancellationToken cancellationToken) =>
         {
             return await sender.Send(new LoginUser.Command(data), cancellationToken);
         })
