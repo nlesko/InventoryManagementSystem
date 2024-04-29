@@ -15,6 +15,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<Warehouse> Warehouses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

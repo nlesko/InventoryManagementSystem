@@ -2,6 +2,8 @@ using FluentValidation;
 
 using MediatR;
 
+using ValidationException = InventoryManagementSystemApi.API.Common.Exceptions.ValidationException;
+
 namespace InventoryManagementSystemApi.API.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

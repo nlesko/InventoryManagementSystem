@@ -23,9 +23,11 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddCarter(configurator: c => 
+        {
+            c.WithValidatorLifetime(ServiceLifetime.Scoped);
+        });
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddCarter();
         services.AddMediatR(options =>
         {
             options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -34,6 +36,7 @@ public static class ConfigureServices
             options.AddOpenBehavior(typeof(PerformanceBehaviour<,>));
             options.AddOpenBehavior(typeof(UnhandledExceptionBehaviour<,>));
         });
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
         return services;
     }
@@ -101,12 +104,25 @@ public static class ConfigureServices
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
-                    ValidIssuer = jwtSettings["validIssuer"],
-                    ValidAudience = jwtSettings["validAudience"],
+                    // ValidIssuer = jwtSettings["validIssuer"],
+                    // ValidAudience = jwtSettings["validAudience"],
                     ClockSkew = TimeSpan.Zero
+                };
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
         // services.AddScoped<IDomainEventService, DomainEventService>();
