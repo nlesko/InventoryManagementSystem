@@ -1,7 +1,6 @@
 using FluentValidation;
 
-using InventoryManagementSystemApi.API.Common;
-using InventoryManagementSystemApi.API.Contracts.Warehouses;
+using InventoryManagementSystemApi.API.Contracts.ProductCategories;
 using InventoryManagementSystemApi.API.Domain.Entities;
 using InventoryManagementSystemApi.API.Infrastructure.Persistence;
 
@@ -9,19 +8,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace InventoryManagementSystemApi.API.Features.Warehouses;
+namespace InventoryManagementSystemApi.API.Features.ProductCategories;
 
-public static class CreateWarehouse
+public static class CreateProductCategory
 {
-    public record Command : IRequest<int>
-    {
-        public WarehouseRequest Data { get; }
-
-        public Command(WarehouseRequest data)
-        {
-            Data = data;
-        }
-    }
+    public record Command(ProductCategoryRequest Data) : IRequest<int>;
 
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -31,15 +22,10 @@ public static class CreateWarehouse
             _context = context;
 
             RuleFor(x => x.Data.Name).NotNull().NotEmpty().MustAsync(BeUniqueName).WithMessage("The specified name already exists.");
-            RuleFor(x => x.Data.Location).NotNull().NotEmpty();
-            RuleFor(x => x.Data.EmailAddress).NotNull().NotEmpty();
-            RuleFor(x => x.Data.PhoneNumber).NotNull().NotEmpty();
-            RuleFor(x => x.Data.Capacity).GreaterThan(0);
-            RuleFor(x => x.Data.ManagerId).GreaterThan(0);
         }
         private Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
         {
-            return _context.Warehouses
+            return _context.ProductCategories
                 .AllAsync(x => x.Name != name, cancellationToken);
         }
     }
@@ -60,18 +46,14 @@ public static class CreateWarehouse
                 throw new OperationCanceledException();
             }
 
-            var entity = new Warehouse
+            var entity = new ProductCategory
             {
                 Name = request.Data.Name,
-                Location = request.Data.Location,
-                Capacity = request.Data.Capacity,
-                ManagerId = request.Data.ManagerId,
-                EmailAddress = request.Data.EmailAddress,
-                PhoneNumber = request.Data.PhoneNumber
+                Description = request.Data.Description
             };
 
-            await _context.Warehouses.AddAsync(entity, cancellationToken);
-            // entity.AddDomainEvent(new WarehouseCreatedEvent(entity));
+            _context.ProductCategories.Add(entity);
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;

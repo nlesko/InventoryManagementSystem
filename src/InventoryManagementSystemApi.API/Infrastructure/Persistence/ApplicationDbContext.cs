@@ -16,6 +16,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Warehouse> Warehouses { get; set; }
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
