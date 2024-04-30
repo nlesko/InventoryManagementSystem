@@ -18,6 +18,7 @@ public class ProductSubCategoryModule : BaseEndpointModule
         })
         .WithName(nameof(GetProductSubCategories))
         .WithOpenApi()
+        .WithTags(nameof(ProductSubCategories))
         .RequireAuthorization();
 
         app.MapGet("{id}", async (ISender sender, int id, CancellationToken cancellationToken) =>
@@ -25,6 +26,7 @@ public class ProductSubCategoryModule : BaseEndpointModule
             return await sender.Send(new GetProductSubCategory.Query(id), cancellationToken);
         })
         .WithName(nameof(GetProductSubCategory))
+        .WithTags(nameof(ProductSubCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -34,6 +36,7 @@ public class ProductSubCategoryModule : BaseEndpointModule
             return Results.Created($"product-sub-categories/{id}", id);
         })
         .WithName(nameof(CreateProductSubCategory))
+        .WithTags(nameof(ProductSubCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -44,6 +47,7 @@ public class ProductSubCategoryModule : BaseEndpointModule
             return Results.NoContent();
         })
         .WithName(nameof(UpdateProductSubCategory))
+        .WithTags(nameof(ProductSubCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -53,6 +57,7 @@ public class ProductSubCategoryModule : BaseEndpointModule
             return Results.Ok(result);
         })
         .WithName(nameof(DeleteProductSubCategory))
+        .WithTags(nameof(ProductSubCategories))
         .WithOpenApi()
         .RequireAuthorization();
     }

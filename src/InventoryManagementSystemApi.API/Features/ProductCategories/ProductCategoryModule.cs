@@ -16,6 +16,7 @@ public class ProductCategoryModule : BaseEndpointModule
             return await sender.Send(new GetProductCategories.Query(), cancellationToken);
         })
         .WithName(nameof(GetProductCategories))
+        .WithTags(nameof(ProductCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -24,6 +25,7 @@ public class ProductCategoryModule : BaseEndpointModule
             return await sender.Send(new GetProductCategory.Query(id), cancellationToken);
         })
         .WithName(nameof(GetProductCategory))
+        .WithTags(nameof(ProductCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -33,6 +35,7 @@ public class ProductCategoryModule : BaseEndpointModule
             return Results.Created($"product-categories/{id}", id);
         })
         .WithName(nameof(CreateProductCategory))
+        .WithTags(nameof(ProductCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -43,6 +46,7 @@ public class ProductCategoryModule : BaseEndpointModule
             return Results.NoContent();
         })
         .WithName(nameof(UpdateProductCategory))
+        .WithTags(nameof(ProductCategories))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -52,6 +56,7 @@ public class ProductCategoryModule : BaseEndpointModule
             return Results.Ok(result);
         })
         .WithName(nameof(DeleteProductCategory))
+        .WithTags(nameof(ProductCategories))
         .WithOpenApi()
         .RequireAuthorization();
     }

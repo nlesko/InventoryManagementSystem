@@ -16,6 +16,7 @@ public class WarehouseModule : BaseEndpointModule
             return await sender.Send(new GetWarehouses.Query(), cancellationToken);
         })
         .WithName(nameof(GetWarehouses))
+        .WithTags(nameof(Warehouses))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -24,6 +25,7 @@ public class WarehouseModule : BaseEndpointModule
             return await sender.Send(new GetWarehouse.Query(id), cancellationToken);
         })
         .WithName(nameof(GetWarehouse))
+        .WithTags(nameof(Warehouses))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -33,6 +35,7 @@ public class WarehouseModule : BaseEndpointModule
             return Results.Created($"warehouses/{id}", id);
         })
         .WithName(nameof(CreateWarehouse))
+        .WithTags(nameof(Warehouses))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -43,6 +46,7 @@ public class WarehouseModule : BaseEndpointModule
             return Results.NoContent();
         })
         .WithName(nameof(UpdateWarehouse))
+        .WithTags(nameof(Warehouses))
         .WithOpenApi()
         .RequireAuthorization();
 
@@ -52,6 +56,7 @@ public class WarehouseModule : BaseEndpointModule
             return Results.Ok(result);
         })
         .WithName(nameof(DeleteWarehouse))
+        .WithTags(nameof(Warehouses))
         .WithOpenApi()
         .RequireAuthorization();
     }
