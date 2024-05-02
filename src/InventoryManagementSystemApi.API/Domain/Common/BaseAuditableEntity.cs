@@ -2,11 +2,11 @@ namespace InventoryManagementSystemApi.API.Domain.Common;
 
 public class BaseAuditableEntity : BaseEntity
 {
-    public DateTime DateCreated { get; set; }
+    public DateTime DateCreatedUtc { get; set; }
 
-    public string? CreatedBy { get; set; }
+    public int CreatedById { get; set; }
 
-    public DateTime? DateLastModified { get; set; }
+    public DateTime? DateLastModifiedUtc { get; set; }
 
-    public string? LastModifiedBy { get; set; }
+    public int LastModifiedById { get; set; }
 }

@@ -9,5 +9,6 @@ public class ProductCategory : BaseEntity
 
     #region Navigation Properties
     public virtual ICollection<ProductSubCategory> ProductSubCategories { get; set; } = new List<ProductSubCategory>();
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     #endregion
 }

@@ -10,4 +10,8 @@ public class ProductSupplier : BaseEntity
     public string? Address { get; set; }
     public string? ContactPerson { get; set; }
     public string? Website { get; set; }
+
+    #region Navigation Properties
+    public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+    #endregion
 }

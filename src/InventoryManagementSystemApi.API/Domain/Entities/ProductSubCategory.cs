@@ -10,6 +10,7 @@ public class ProductSubCategory : BaseEntity
 
     #region Navigation Properties
     public virtual ProductCategory ProductCategory { get; set; } = null!;
+    public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
     #endregion
 }
 
