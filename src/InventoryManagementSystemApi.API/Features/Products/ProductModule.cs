@@ -9,7 +9,7 @@ public class ProductModule : BaseEndpointModule
 {
     public ProductModule() : base("products") { }
 
-     public override void AddRoutes(IEndpointRouteBuilder app)
+    public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet("", async (ISender sender, CancellationToken cancellationToken = new()) =>
         {

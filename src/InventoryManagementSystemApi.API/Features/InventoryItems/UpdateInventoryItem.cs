@@ -1,7 +1,7 @@
 using FluentValidation;
 
 using InventoryManagementSystemApi.API.Common.Exceptions;
-using InventoryManagementSystemApi.API.Contracts.ProductCategories;
+using InventoryManagementSystemApi.API.Contracts.InventoryItems;
 using InventoryManagementSystemApi.API.Domain.Entities;
 using InventoryManagementSystemApi.API.Infrastructure.Persistence;
 
@@ -9,34 +9,37 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace InventoryManagementSystemApi.API.Features.ProductCategories;
+namespace InventoryManagementSystemApi.API.Features.InventoryItems;
 
-public static class UpdateProductCategory
+public static class UpdateInventoryItem
 {
-    public record Command(int Id, ProductCategoryRequest Data) : IRequest<Unit>;
+    public record Command(int Id, InventoryItemRequest Data) : IRequest<Unit>;
 
     public sealed class Validator : AbstractValidator<Command>
     {
         private readonly ApplicationDbContext _context;
+        
         public Validator(ApplicationDbContext context)
         {
             _context = context;
 
             RuleFor(x => x.Id).GreaterThan(0);
             RuleFor(x => x.Data).NotNull();
-            RuleFor(x => x.Data.Name).NotEmpty().MustAsync(BeUniqueName).WithMessage("The specified name already exists.");
+            RuleFor(x => x.Data.ProductId).GreaterThan(0);
+            RuleFor(x => x.Data.WarehouseId).GreaterThan(0).MustAsync(BeUniqueProduct).WithMessage("The specified product already exists.");
         }
 
-        private Task<bool> BeUniqueName(Command model, string name, CancellationToken cancellationToken)
+        private Task<bool> BeUniqueProduct(Command model, int productId, CancellationToken cancellationToken)
         {
-            return _context.ProductCategories
-                .Where(x => x.Id != model.Id)
-                .AllAsync(x => x.Name != name, cancellationToken);
+            return _context.InventoryItems
+                .Where(x => x.Id != model.Id && x.WarehouseId == model.Data.WarehouseId)
+                .AllAsync(x => x.ProductId != productId, cancellationToken);
         }
     }
 
     internal sealed class Handler : IRequestHandler<Command, Unit>
     {
+
         private readonly ApplicationDbContext _context;
 
         public Handler(ApplicationDbContext context)
@@ -51,17 +54,18 @@ public static class UpdateProductCategory
                 throw new OperationCanceledException();
             }
 
-            var entity = await _context.ProductCategories
+            var entity = await _context.InventoryItems
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(ProductCategory), request.Id);
+                throw new NotFoundException(nameof(InventoryItem), request.Id);
             }
 
-            entity.Name = request.Data.Name;
-            entity.Description = request.Data.Description;
+            entity.ProductId = request.Data.ProductId;
+            entity.WarehouseId = request.Data.WarehouseId;
+            entity.Quantity = request.Data.Quantity;
 
             await _context.SaveChangesAsync(cancellationToken);
 
