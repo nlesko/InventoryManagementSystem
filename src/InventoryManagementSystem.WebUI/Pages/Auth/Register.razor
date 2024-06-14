@@ -1,0 +1,137 @@
+@using Microsoft.AspNetCore.Components;
+@using InventoryManagementSystem.WebUI.Entities.DTO;
+@inject InventoryManagementSystem.WebUI.Services.IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+@page "/register"
+
+<div class="flex flex-col overflow-y-auto md:flex-row">
+    <div class="h-32 md:h-auto md:w-1/2">
+    <img
+        aria-hidden="true"
+        class="object-cover w-full h-full dark:hidden"
+        src="/images/create-account-office.jpeg"
+        alt="Office"
+    />
+    <img
+        aria-hidden="true"
+        class="hidden object-cover w-full h-full dark:block"
+        src="/images/create-account-office-dark.jpeg"
+        alt="Office"
+    />
+    </div>
+    <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+    <EditForm Model="_userForRegistration" OnValidSubmit="RegisterUser" class="w-full">
+        <DataAnnotationsValidator />
+        <h1
+        class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200"
+        >
+        Create account
+        </h1>
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Email</span>
+            <InputText
+                @bind-Value="_userForRegistration.Email"
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                placeholder="Enter email address"
+            />
+            <ValidationMessage For="@(() => _userForRegistration.Email)" />
+        </label>
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">First name</span>
+            <InputText
+                @bind-Value="_userForRegistration.FirstName"
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                placeholder="Enter first name"
+                type="text"
+            />
+            <ValidationMessage For="@(() => _userForRegistration.FirstName)" />
+        </label>
+        <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Last name</span>
+            <InputText
+                @bind-Value="_userForRegistration.LastName"
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                placeholder="Enter last name"
+                type="text"
+            />
+            <ValidationMessage For="@(() => _userForRegistration.LastName)" />
+        </label>
+        <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Password</span>
+            <InputText
+                @bind-Value="_userForRegistration.Password"
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                placeholder="***************"
+                type="password"
+            />
+            <ValidationMessage For="@(() => _userForRegistration.Password)" />
+        </label>
+        <label class="block mt-4 text-sm">
+        <span class="text-gray-700 dark:text-gray-400">
+            Confirm password
+        </span>
+        <InputText
+            @bind-Value="_userForRegistration.ConfirmPassword"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            placeholder="***************"
+            type="password"
+        />
+        <ValidationMessage For="@(() => _userForRegistration.ConfirmPassword)" />
+        </label>
+
+        @* <div class="flex mt-6 text-sm">
+        <label class="flex items-center dark:text-gray-400">
+            <input
+            type="checkbox"
+            class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+            />
+            <span class="ml-2">
+            I agree to the
+            <span class="underline">privacy policy</span>
+            </span>
+        </label>
+        </div> *@
+
+        <!-- You should use a button here, as the anchor is only used for the example  -->
+        <button
+        type="submit"
+        class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+        >
+        Create account
+        </button>
+
+        <hr class="my-8" />
+
+        <p class="mt-4">
+        <a
+            class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+            href="./login.html"
+        >
+            Already have an account? Login
+        </a>
+        </p>
+    </EditForm>
+    </div>
+</div>
+
+@code {
+    private UserForRegistrationDto _userForRegistration = new UserForRegistrationDto();
+    public bool ShowRegistrationErros { get; set; }
+    public IEnumerable<string> Errors { get; set; }
+
+    private async Task RegisterUser()
+    {
+        ShowRegistrationErros = false;
+
+        var result = await AuthenticationService.RegisterUser(_userForRegistration);
+        if(!result.IsSuccessfulRegistration)
+        {
+            Errors = result.Errors;
+            ShowRegistrationErros = true;
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}
