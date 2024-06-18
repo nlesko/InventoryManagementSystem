@@ -1,4 +1,4 @@
-namespace InventoryManagementSystem.API.Contracts.ProductCategories;
+namespace InventoryManagementSystem.Shared.Contracts.ProductCategories;
 
 public class ProductCategoryRequest
 {

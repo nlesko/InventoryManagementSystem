@@ -1,5 +1,5 @@
 using InventoryManagementSystem.API.Common;
-using InventoryManagementSystem.API.Contracts.Warehouses;
+using InventoryManagementSystem.Shared.Contracts.Warehouses;
 
 using MediatR;
 

@@ -1,9 +1,9 @@
 using FluentValidation;
 
 using InventoryManagementSystem.API.Common.Exceptions;
-using InventoryManagementSystem.API.Contracts.ProductSuppliers;
 using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.ProductSuppliers;
 
 using MediatR;
 

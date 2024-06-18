@@ -1,8 +1,6 @@
-using InventoryManagementSystem.API.Common.Mappings;
+namespace InventoryManagementSystem.Shared.Contracts.ProductSuppliers;
 
-namespace InventoryManagementSystem.API.Contracts.ProductSuppliers;
-
-public class ProductSupplierResult : IMapFrom<Domain.Entities.ProductSupplier>
+public class ProductSuppliersResult
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;

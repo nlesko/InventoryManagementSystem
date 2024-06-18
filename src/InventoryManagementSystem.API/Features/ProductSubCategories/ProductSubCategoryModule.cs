@@ -1,6 +1,6 @@
 using InventoryManagementSystem.API.Common;
-using InventoryManagementSystem.API.Contracts.ProductSubCategories;
 using InventoryManagementSystem.API.Features.ProductCategories;
+using InventoryManagementSystem.Shared.Contracts.ProductSubCategories;
 
 using MediatR;
 

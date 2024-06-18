@@ -1,4 +1,4 @@
-namespace InventoryManagementSystem.API.Contracts.InventoryItems;
+namespace InventoryManagementSystem.Shared.Contracts.InventoryItems;
 
 public class InventoryItemRequest
 {

@@ -1,9 +1,9 @@
 using FluentValidation;
 
 using InventoryManagementSystem.API.Common;
-using InventoryManagementSystem.API.Contracts.Warehouses;
 using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.Warehouses;
 
 using MediatR;
 

@@ -1,7 +1,7 @@
 using FluentValidation;
 
-using InventoryManagementSystem.API.Contracts.InventoryItems;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.InventoryItems;
 
 using MediatR;
 

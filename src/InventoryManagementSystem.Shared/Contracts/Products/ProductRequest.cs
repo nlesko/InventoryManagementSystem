@@ -1,4 +1,4 @@
-namespace InventoryManagementSystem.API.Contracts.Products;
+namespace InventoryManagementSystem.Shared.Contracts.Products;
 
 public class ProductRequest
 {

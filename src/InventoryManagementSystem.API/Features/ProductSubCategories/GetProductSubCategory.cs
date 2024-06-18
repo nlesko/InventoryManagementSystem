@@ -2,9 +2,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using InventoryManagementSystem.API.Common.Exceptions;
-using InventoryManagementSystem.API.Contracts.ProductSubCategories;
+using InventoryManagementSystem.API.Common.Mappings;
 using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.ProductSubCategories;
 
 using MediatR;
 
@@ -14,6 +15,15 @@ namespace InventoryManagementSystem.API.Features.ProductCategories;
 
 public static class GetProductSubCategory
 {
+
+    public class GetProductSubCategoryMapping : IMapFrom<ProductSubCategory>
+    {
+        public void Mapping(AutoMapper.Profile profile)
+        {
+            profile.CreateMap<ProductSubCategory, ProductSubCategoryResult>();
+        }
+    }
+
     public record Query(int Id) : IRequest<ProductSubCategoryResult>;
 
     internal sealed class Handler : IRequestHandler<Query, ProductSubCategoryResult>

@@ -2,8 +2,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using InventoryManagementSystem.API.Common.Exceptions;
-using InventoryManagementSystem.API.Contracts.Warehouses;
+using InventoryManagementSystem.API.Common.Mappings;
+using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.Warehouses;
 
 using MediatR;
 
@@ -13,6 +15,15 @@ namespace InventoryManagementSystem.API.Features.Warehouses;
 
 public static class GetWarehouse
 {
+
+    public class GetWarehouseMapping : IMapFrom<Warehouse>
+    {
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Warehouse, WarehouseResult>();
+        }
+    }
+
     public record Query(int Id) : IRequest<WarehouseResult> { }
 
     internal sealed class Handler : IRequestHandler<Query, WarehouseResult>

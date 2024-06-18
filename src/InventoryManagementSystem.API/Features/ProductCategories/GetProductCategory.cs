@@ -2,9 +2,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using InventoryManagementSystem.API.Common.Exceptions;
-using InventoryManagementSystem.API.Contracts.ProductCategories;
+using InventoryManagementSystem.API.Common.Mappings;
 using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.ProductCategories;
 
 using MediatR;
 
@@ -14,6 +15,15 @@ namespace InventoryManagementSystem.API.Features.ProductCategories;
 
 public static class GetProductCategory
 {
+
+    public class GetProductCategoryMapping : IMapFrom<ProductCategory>
+    {
+        public void Mapping(AutoMapper.Profile profile)
+        {
+            profile.CreateMap<ProductCategory, ProductCategoryResult>();
+        }
+    }
+
     public record Query(int Id) : IRequest<ProductCategoryResult>;
 
     internal sealed class Handler : IRequestHandler<Query, ProductCategoryResult>

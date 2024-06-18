@@ -2,9 +2,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
 using InventoryManagementSystem.API.Common.Exceptions;
-using InventoryManagementSystem.API.Contracts.ProductSuppliers;
+using InventoryManagementSystem.API.Common.Mappings;
 using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.ProductSuppliers;
 
 using MediatR;
 
@@ -14,6 +15,15 @@ namespace InventoryManagementSystem.API.Features.ProductSuppliers;
 
 public static class GetProductSupplier
 {
+
+    public class GetProductSupplierMapping : IMapFrom<ProductSupplier>
+    {
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<ProductSupplier, ProductSupplierResult>();
+        }
+    }
+
     public record Query(int Id) : IRequest<ProductSupplierResult>;
 
     internal sealed class Handler : IRequestHandler<Query, ProductSupplierResult>

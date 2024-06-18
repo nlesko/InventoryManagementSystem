@@ -1,5 +1,5 @@
 using InventoryManagementSystem.API.Common;
-using InventoryManagementSystem.API.Contracts.ProductSuppliers;
+using InventoryManagementSystem.Shared.Contracts.ProductSuppliers;
 
 using MediatR;
 

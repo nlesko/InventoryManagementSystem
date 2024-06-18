@@ -1,8 +1,10 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
-using InventoryManagementSystem.API.Contracts.Products;
+using InventoryManagementSystem.API.Common.Mappings;
+using InventoryManagementSystem.API.Domain.Entities;
 using InventoryManagementSystem.API.Infrastructure.Persistence;
+using InventoryManagementSystem.Shared.Contracts.Products;
 
 using MediatR;
 
@@ -12,6 +14,17 @@ namespace InventoryManagementSystem.API.Features.Products;
 
 public static class GetProducts
 {
+    public class GetProductsMapping : IMapFrom<Domain.Entities.Product>
+    {
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Product, ProductsResult>()
+                .ForMember(dest => dest.ProductCategory, opt => opt.MapFrom(src => src.ProductCategory.Name))
+                .ForMember(dest => dest.ProductSubCategory, opt => opt.MapFrom(src => src.ProductSubCategory != null ? src.ProductSubCategory.Name : null))
+                .ForMember(dest => dest.ProductSupplier, opt => opt.MapFrom(src => src.ProductSupplier.Name));
+        }
+    }
+
     public record Query : IRequest<List<ProductsResult>>;
 
     internal sealed class Handler : IRequestHandler<Query, List<ProductsResult>>

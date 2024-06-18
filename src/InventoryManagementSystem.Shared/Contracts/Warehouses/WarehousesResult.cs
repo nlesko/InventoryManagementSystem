@@ -1,8 +1,6 @@
-using InventoryManagementSystem.API.Common.Mappings;
+namespace InventoryManagementSystem.Shared.Contracts.Warehouses;
 
-namespace InventoryManagementSystem.API.Contracts.Warehouses;
-
-public class WarehousesResult : IMapFrom<Domain.Entities.Warehouse>
+public class WarehousesResult
 {
     public int Id { get; set; }    
     public string Name { get; set; } = null!;

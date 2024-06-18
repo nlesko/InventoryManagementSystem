@@ -1,4 +1,4 @@
-namespace InventoryManagementSystem.API.Contracts.Warehouses;
+namespace InventoryManagementSystem.Shared.Contracts.Warehouses;
 
 public class WarehouseRequest
 {
